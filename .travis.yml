@@ -28,3 +28,4 @@ deploy:
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   session_token: $AWS_SESSION_TOKEN
+  sts_assume_role: arn:aws:iam::614919950296:role/robomaker_students
