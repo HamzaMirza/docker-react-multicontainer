@@ -1,0 +1,37 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions":[
+        {
+            "name":"client",
+            "image":"hamza156/docker-react-app-client-image",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name":"server",
+            "image":"hamza156/docker-react-app-server-image",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name":"worker",
+            "image":"hamza156/docker-react-app-worker-image",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name":"nginx",
+            "image":"hamza156/docker-react-app-nginx-image",
+            "hostname": "nginx",
+            "portMappings":[
+                {
+                    "hostPort" : 80,
+                    "containerport": 80
+                }
+            ],
+            "links":[ "client", "server" ],
+            "essential": true
+        }
+    ]
+
+}
