@@ -16,4 +16,15 @@ script:
 services: 
   - docker
 sudo: required
-
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: docker-react-multicontainer
+  env: DockerReactMulticontainer-env
+  bucket_name: elasticbeanstalk-us-east-1-614919950296
+  bucket_path: docker-react-multicontainer-bucket
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key:
+    secure: $AWS_SECRET_KEY
