@@ -1,0 +1,31 @@
+--- 
+after_success: 
+  - "docker build -t hamza156/docker-react-app-client-image -f ./client/dockerfile ./client"
+  - "docker build -t hamza156/docker-react-app-nginx-image -f ./nginx/dockerfile ./nginx"
+  - "docker build -t hamza156/docker-react-app-server-image -f ./server/dockerfile ./server"
+  - "docker build -t hamza156/docker-react-app-worker-image -f ./worker/dockerfile ./worker"
+  - "echo \"$DOCKER_PASSWORD\" | docker login -u \"$DOCKER_USERID\" --password-stdin"
+  - "docker push hamza156/docker-react-app-client-image"
+  - "docker push hamza156/docker-react-app-nginx-image"
+  - "docker push hamza156/docker-react-app-server-image"
+  - "docker push hamza156/docker-react-app-worker-image"
+before_install: 
+  - "docker build -t hamza156/docker-react-app-test-image -f ./client/dockerfile.dev ./client"
+script: 
+  - "docker run -e=CI=true hamza156/docker-react-app-test-image npm run test"
+services: 
+  - docker
+sudo: required
+deploy:
+  provider: elasticbeanstalk
+  region: us-east-1
+  app: docker-react-multicontainer
+  env: DockerReactMulticontainer-env
+  bucket_name: elasticbeanstalk-us-east-1-614919950296
+  bucket_path: docker-react-multicontainer-bucket
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  session_token: $AWS_SESSION_TOKEN
+  sts_assume_role: arn:aws:iam::614919950296:role/robomaker_students
